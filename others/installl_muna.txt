@@ -1,0 +1,30 @@
+## MAIN INFO ##
+pagistart kay create mo new environment didto idagan
+
+## How to Create Environment :  Run sa Terminal##
+python -m venv nameofENV
+eg: python -m venv venv_MMCMate
+
+Pang activate:
+WIN : myenv\Scripts\activate
+LINUX/OS: source myenv/bin/activate
+eg: venv_MMCMate\Scripts\activate
+
+## Needed To DO in the terminal ##
+mkdir .pip_cache
+pip install --cache-dir=.pip_cache streamlit python-dotenv langdetect nltk langchain langchain-google-genai
+pip install -U langchain-google-genai
+
+
+since public atong gHub Repo  :
+  - create ".env" file
+  - create API_KEY = "your-api-key"
+
+
+If mag yellow line ang imong google something
+Press `Ctrl + Shift + P`
+
+Type: `Python: Select Interpreter`
+
+Select one that points to your virtual environment something like
+eg: MMCMate\Scripts\python.exe
