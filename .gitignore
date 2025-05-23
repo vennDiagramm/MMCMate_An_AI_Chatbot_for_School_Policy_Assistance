@@ -1,5 +1,5 @@
 # Ignore environment files
-/chatBot/
+/joban_mmcmate/
 /__pycache__/
 .pip_cache/
 
