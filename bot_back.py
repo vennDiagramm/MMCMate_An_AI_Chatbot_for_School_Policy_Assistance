@@ -6,7 +6,6 @@ import sqlite3
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-
 # Import necessary LangChain components
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
@@ -22,7 +21,6 @@ load_dotenv()
 # Initialize the input checker
 import Checkers as input_checker
 input_checker = input_checker.InputChecker()
-
 
 # Access the API_KEY environment variable
 api_key = os.getenv('API_KEY')
@@ -52,8 +50,6 @@ def extract_raw_data_from_db(db_path):
     
     conn.close()
     return db_content
-
-
 
 # Modify your query_gemini_api function to utilize memory
 def query_gemini_api(db_path, user_input):
@@ -91,7 +87,7 @@ def query_gemini_api(db_path, user_input):
     
     # If user is greeting the bot
     elif input_checker.contains_keywords(user_input, GREETING_KEYWORDS) and len(user_input) <= 17:
-        return "Hello! How can I assist you with admission information today?"
+        return "Hello! How may I assist you today?"
     
     # Nonsense input check
     elif any([input_checker.is_mathematical_expression(user_input), input_checker.is_nonsensical_input(user_input)]):
@@ -105,28 +101,27 @@ def query_gemini_api(db_path, user_input):
     if "Not found" in response or "Unavailable" in response or not response.strip():
         return "I'm sorry, I couldn't find an answer to your question. Could you please rephrase it or ask something else?" 
 
-
     return response  # After all words are typed, return the full response
-    
 
 def handle_conversation(db_path):
-    # Initialize and display chat history
+    # Initialize chat history
     init_chat()
-    display_chat()
-
+    
     # Capture user input
     user_input = st.chat_input("Ask me anything about the school's handbook!")
 
     if user_input:
-        # Add user message and show it
+        # Add user message to session state
         add_message("user", user_input)
+        
+        # Display user message immediately
         with st.chat_message("user", avatar='https://raw.githubusercontent.com/vennDiagramm/admissionBot/refs/heads/main/Icons/student.ico'):
             st.markdown(user_input)
 
         # Get assistant response
         result_gen = query_gemini_api(db_path, user_input)
 
-        # Typing simulation
+        # Display assistant response with typing effect
         with st.chat_message("assistant", avatar='https://raw.githubusercontent.com/vennDiagramm/admissionBot/refs/heads/main/Icons/mapua_icon_83e_icon.ico'):
             assistant_message = ""
             placeholder = st.empty()
@@ -135,5 +130,5 @@ def handle_conversation(db_path):
                 placeholder.markdown(assistant_message)
                 time.sleep(0.02)
 
-        # Add assistant response
+        # Add assistant response to session state
         add_message("assistant", assistant_message)
