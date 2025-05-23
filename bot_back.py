@@ -79,7 +79,7 @@ def query_gemini_api(db_path, user_input):
 
     # If input matches accepted keywords
     if input_checker.contains_keywords(user_input, ACCEPTED_KEYWORDS):
-        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone})
+        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone}) + "\n\n We recommend the user to refer to the handbook for more details."
     
     # If user is saying goodbye
     elif input_checker.contains_keywords(user_input, GOODBYE_KEYWORDS):
@@ -95,7 +95,7 @@ def query_gemini_api(db_path, user_input):
 
     # For general queries
     else:
-        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone})
+        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone}) + "\n\nWe recommend the user to refer to the handbook for more details."
 
     # If the response is not valid
     if "Not found" in response or "Unavailable" in response or not response.strip():
