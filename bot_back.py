@@ -116,7 +116,7 @@ def query_gemini_api(db_path, user_input):
     llm_chain = LLMChain(prompt=prompt, llm=model)
 
     if input_checker.contains_keywords(user_input, ACCEPTED_KEYWORDS):
-        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone})
+        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone}) + "\n\n We recommend you to check the handbook for more details."
     elif input_checker.contains_keywords(user_input, GOODBYE_KEYWORDS):
         return "You are very much welcome! I am glad I could help!"
     elif input_checker.contains_keywords(user_input, GREETING_KEYWORDS) and len(user_input) <= 17:
@@ -127,7 +127,7 @@ def query_gemini_api(db_path, user_input):
     ]):
         return "I'm sorry, I can't help you with that. Please ask questions regarding the handbook. Could you please ask something else or clarify your question?"
     else:
-        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone})
+        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone}) + "\n\n We recommend you to check the handbook for more details."
 
     if "Not found" in response or "Unavailable" in response or not response.strip():
         return "I'm sorry, I couldn't find an answer to your question. Could you please rephrase it or ask something else?"
