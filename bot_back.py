@@ -6,7 +6,6 @@ import sqlite3
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-
 # Import necessary LangChain components
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
@@ -22,7 +21,6 @@ load_dotenv()
 # Initialize the input checker
 import Checkers as input_checker
 input_checker = input_checker.InputChecker()
-
 
 # Access the API_KEY environment variable
 api_key = os.getenv('API_KEY')
@@ -53,80 +51,109 @@ def extract_raw_data_from_db(db_path):
     conn.close()
     return db_content
 
-
-
 # Modify your query_gemini_api function to utilize memory
 def query_gemini_api(db_path, user_input):
     tone = (
-    "Respond formally and professionally, providing only the requested information. "
-    "This is a policy handbook. IDs like '2.a', '3.b.1' represent numbered offenses, "
-    "with the first number being the major category (e.g., 2 = Academic Integrity), "
-    "and letters/numbers denoting subcategories. Respond with the appropriate policy or rule "
-    "based on these IDs. Provide clear and concise answers, no HTML, do not mention how the answer was generated, "
-    "and **do not explicitly state that the information comes 'from the document' or similar phrases.**"
-    " Do not say the IDs but the content of the IDs. "
+        "Respond formally and professionally, providing only the requested information. "
+        "If the requested offense level does not exist in the database, clearly state that and "
+        "inform the user of how many levels are available. Do not guess or invent content. "
+        "This is a policy handbook. IDs like '2.a', '3.b.1' represent numbered offenses, "
+        "and letters/numbers denoting subcategories. Respond with the appropriate policy or rule "
+        "based on these IDs. Provide clear and concise answers, no HTML, do not mention how the answer was generated, "
+        "and **do not explicitly state that the information comes 'from the document' or similar phrases.**"
+        " Do not say the IDs but the content of the IDs. "
     )
-    # Extracting the content from the database
+
+    user_input_clean = user_input.strip().lower()
+
+    # Map word-based phrases to column names in the DB
+    level_map = {
+        "first offense": "1st offense",
+        "1st offense": "1st offense",
+        "second offense": "2nd offense",
+        "2nd offense": "2nd offense",
+        "third offense": "3rd offense",
+        "3rd offense": "3rd offense",
+        "fourth offense": "4th offense",
+        "4th offense": "4th offense"
+    }
+
+    offense_level_detected = None
+    for phrase, column_name in level_map.items():
+        if phrase in user_input_clean:
+            offense_level_detected = column_name
+            break
+
+    # Default full database content
     db_content = extract_raw_data_from_db(db_path)
 
-    # Define the prompt template, including the tone as part of the template
+    if offense_level_detected:
+        try:
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+
+            # Ensure proper quoting for column name
+            query = f"SELECT Category, [{offense_level_detected}] FROM databaseBot WHERE [{offense_level_detected}] IS NOT NULL AND TRIM([{offense_level_detected}]) != ''"
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            conn.close()
+
+            if not rows:
+                return f"I'm sorry, there is no information available for a {offense_level_detected} in the handbook."
+
+            db_content = "\n".join(f"{row[0]}: {row[1]}" for row in rows if row[0] and row[1])
+
+        except Exception as e:
+            return f"An error occurred while checking offense levels: {str(e)}"
+
+    # Define the prompt
     prompt = PromptTemplate(
         input_variables=["db_content", "user_input", "tone"],
         template="{tone} Answer the query based on the following data: {user_input}. Limit up to 500 words if possible. Here is the data: {db_content}"
     )
 
-    # Clean the user input
     user_input = user_input.strip().lower()
-
-    # Create the LLMChain with the model (Gemini API or similar)
     llm_chain = LLMChain(prompt=prompt, llm=model)
 
-    # If input matches accepted keywords
     if input_checker.contains_keywords(user_input, ACCEPTED_KEYWORDS):
-        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone})
-    
-    # If user is saying goodbye
+        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone}) + "\n\n We recommend you to check the handbook for more details."
     elif input_checker.contains_keywords(user_input, GOODBYE_KEYWORDS):
         return "You are very much welcome! I am glad I could help!"
-    
-    # If user is greeting the bot
     elif input_checker.contains_keywords(user_input, GREETING_KEYWORDS) and len(user_input) <= 17:
-        return "Hello! How can I assist you with admission information today?"
-    
-    # Nonsense input check
-    elif any([input_checker.is_mathematical_expression(user_input), input_checker.is_nonsensical_input(user_input)]):
+        return "Hello! How may I assist you today?"
+    elif any([
+        input_checker.is_mathematical_expression(user_input),
+        input_checker.is_nonsensical_input(user_input)
+    ]):
         return "I'm sorry, I can't help you with that. Please ask questions regarding the handbook. Could you please ask something else or clarify your question?"
-
-    # For general queries
     else:
-        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone})
+        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone}) + "\n\n We recommend you to check the handbook for more details."
 
-    # If the response is not valid
     if "Not found" in response or "Unavailable" in response or not response.strip():
-        return "I'm sorry, I couldn't find an answer to your question. Could you please rephrase it or ask something else?" 
+        return "I'm sorry, I couldn't find an answer to your question. Could you please rephrase it or ask something else?"
 
+    return response
 
-    return response  # After all words are typed, return the full response
-    
 
 def handle_conversation(db_path):
-    # Initialize and display chat history
+    # Initialize chat history
     init_chat()
-    display_chat()
-
+    
     # Capture user input
     user_input = st.chat_input("Ask me anything about the school's handbook!")
 
     if user_input:
-        # Add user message and show it
+        # Add user message to session state
         add_message("user", user_input)
+        
+        # Display user message immediately
         with st.chat_message("user", avatar='https://raw.githubusercontent.com/vennDiagramm/admissionBot/refs/heads/main/Icons/student.ico'):
             st.markdown(user_input)
 
         # Get assistant response
         result_gen = query_gemini_api(db_path, user_input)
 
-        # Typing simulation
+        # Display assistant response with typing effect
         with st.chat_message("assistant", avatar='https://raw.githubusercontent.com/vennDiagramm/admissionBot/refs/heads/main/Icons/mapua_icon_83e_icon.ico'):
             assistant_message = ""
             placeholder = st.empty()
@@ -135,5 +162,5 @@ def handle_conversation(db_path):
                 placeholder.markdown(assistant_message)
                 time.sleep(0.02)
 
-        # Add assistant response
+        # Add assistant response to session state
         add_message("assistant", assistant_message)

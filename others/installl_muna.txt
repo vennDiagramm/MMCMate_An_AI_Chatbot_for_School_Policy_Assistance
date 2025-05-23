@@ -3,17 +3,17 @@ pagistart kay create mo new environment didto idagan
 
 ## How to Create Environment :  Run sa Terminal##
 python -m venv nameofENV
-eg: python -m venv venv_MMCMate
+eg: python -m venv chatBot
 
 Pang activate:
 WIN : myenv\Scripts\activate
 LINUX/OS: source myenv/bin/activate
-eg: venv_MMCMate\Scripts\activate
+eg: chatBot\Scripts\activate
 
 ## Needed To DO in the terminal ##
 mkdir .pip_cache
-pip install --cache-dir=.pip_cache streamlit python-dotenv langdetect nltk langchain langchain-google-genai
-pip install -U langchain-google-genai
+pip install --cache-dir=.pip_cache streamlit python-dotenv langdetect nltk langchain langchain-google-genai uuid
+pip install -U langchain-google-genai (if dili mo gana ning google-genai sa taas)
 
 
 since public atong gHub Repo  :

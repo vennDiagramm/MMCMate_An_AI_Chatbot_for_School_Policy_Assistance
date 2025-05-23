@@ -2,6 +2,7 @@
 /joban_mmcmate/
 /__pycache__/
 .pip_cache/
+/chat_history/
 
 # Ignore the .env file 
 .env
