@@ -55,8 +55,6 @@ def extract_raw_data_from_db(db_path):
 def query_gemini_api(db_path, user_input):
     tone = (
         "Respond formally and professionally, providing only the requested information. "
-        "If the requested offense level does not exist in the database, clearly state that and "
-        "inform the user of how many levels are available. Do not guess or invent content. "
         "This is a policy handbook. IDs like '2.a', '3.b.1' represent numbered offenses, "
         "and letters/numbers denoting subcategories. Respond with the appropriate policy or rule "
         "based on these IDs. Provide clear and concise answers, no HTML, do not mention how the answer was generated, "
@@ -64,47 +62,8 @@ def query_gemini_api(db_path, user_input):
         " Do not say the IDs but the content of the IDs. "
     )
 
-    user_input_clean = user_input.strip().lower()
-
-    # Map word-based phrases to column names in the DB
-    level_map = {
-        "first offense": "1st offense",
-        "1st offense": "1st offense",
-        "second offense": "2nd offense",
-        "2nd offense": "2nd offense",
-        "third offense": "3rd offense",
-        "3rd offense": "3rd offense",
-        "fourth offense": "4th offense",
-        "4th offense": "4th offense"
-    }
-
-    offense_level_detected = None
-    for phrase, column_name in level_map.items():
-        if phrase in user_input_clean:
-            offense_level_detected = column_name
-            break
-
     # Default full database content
     db_content = extract_raw_data_from_db(db_path)
-
-    if offense_level_detected:
-        try:
-            conn = sqlite3.connect(db_path)
-            cursor = conn.cursor()
-
-            # Ensure proper quoting for column name
-            query = f"SELECT Category, [{offense_level_detected}] FROM databaseBot WHERE [{offense_level_detected}] IS NOT NULL AND TRIM([{offense_level_detected}]) != ''"
-            cursor.execute(query)
-            rows = cursor.fetchall()
-            conn.close()
-
-            if not rows:
-                return f"I'm sorry, there is no information available for a {offense_level_detected} in the handbook."
-
-            db_content = "\n".join(f"{row[0]}: {row[1]}" for row in rows if row[0] and row[1])
-
-        except Exception as e:
-            return f"An error occurred while checking offense levels: {str(e)}"
 
     # Define the prompt
     prompt = PromptTemplate(
