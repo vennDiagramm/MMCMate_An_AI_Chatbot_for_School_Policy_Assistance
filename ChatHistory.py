@@ -130,7 +130,8 @@ def display_chat():
             'https://raw.githubusercontent.com/vennDiagramm/admissionBot/refs/heads/main/Icons/mapua_icon_83e_icon.ico'
         )
         with st.chat_message(message["role"], avatar=avatar_path):
-            st.markdown(message["content"])
+            justified_content = f"<div style='text-align: justify;'>{message['content']}</div>" # for justify
+            st.markdown(justified_content, unsafe_allow_html=True)
 
 def start_new_chat():
     """Start a new chat session"""

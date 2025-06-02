@@ -59,7 +59,7 @@ def query_gemini_api(db_path, user_input):
         "and letters/numbers denoting subcategories. Respond with the appropriate policy or rule "
         "based on these IDs. Provide clear and concise answers, no HTML, do not mention how the answer was generated, "
         "and **do not explicitly state that the information comes 'from the document' or similar phrases.**"
-        " Do not say the IDs but the content of the IDs. "
+        " Do not say the IDs but the content of the IDs. " "If it is a list, put it in bullet points. "
     )
 
     # Default full database content

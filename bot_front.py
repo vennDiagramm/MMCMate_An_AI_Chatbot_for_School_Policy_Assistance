@@ -20,11 +20,11 @@ def main():
     # Provide the path to your database file here
     db_path = r"database\databasefinalnjud.db"
 
-    # --- Sidebar (Enhanced Chat History) ---
+    # --- Sidebar (For chat history) ---
     with st.sidebar:
         st.title("📜 Chat History")
         
-        # Chat management buttons
+        # -- Chat management buttons --
         col1, col2 = st.columns(2)
         with col1:
             if st.button("🆕 New Chat", use_container_width=True):
@@ -40,7 +40,7 @@ def main():
                 else:
                     st.warning("No messages to save!")
         
-        # Title input for saving
+        # -- Title input for saving --
         if getattr(st.session_state, 'show_title_input', False):
             title = st.text_input("Chat Title (optional):", key="chat_title")
             col_save, col_cancel = st.columns(2)
@@ -59,7 +59,7 @@ def main():
         
         st.divider()
         
-        # Display saved chats
+        # -- Display saved chats --
         saved_chats = get_chat_sessions()
         
         if saved_chats:
