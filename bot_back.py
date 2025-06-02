@@ -118,7 +118,8 @@ def handle_conversation(db_path):
             placeholder = st.empty()
             for word in result_gen:
                 assistant_message += word
-                placeholder.markdown(assistant_message)
+                justified_html = f"<div style='text-align: justify;'>{assistant_message}</div>"
+                placeholder.markdown(justified_html, unsafe_allow_html=True)
                 time.sleep(0.02)
 
         # Add assistant response to session state
