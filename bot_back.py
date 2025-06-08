@@ -27,7 +27,8 @@ api_key = os.getenv('API_KEY')
 
 # Initialize memory (this is where the conversation will be stored) || Initialize model with memory
 memory = ConversationBufferMemory(memory_key="messages", return_messages=True)
-model = ChatGoogleGenerativeAI(model="gemini-1.5-flash-8b", memory=memory, api_key=api_key)
+model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-preview-05-20", temperature=0.2, memory=memory, api_key=api_key)
+#model = ChatGoogleGenerativeAI(model="gemini-1.5-flash-8b", memory=memory, api_key=api_key)
 
 # Keywords for conversation || FACTS - Lists
 GREETING_KEYWORDS = ["hi", "hello", "hey", "greetings", "whats up", "what's up", "yo", "how are you", "how are you doing"]
@@ -54,12 +55,19 @@ def extract_raw_data_from_db(db_path):
 # Modify your query_gemini_api function to utilize memory
 def query_gemini_api(db_path, user_input):
     tone = (
-        "Respond formally and professionally, providing only the requested information. "
-        "This is a policy handbook. IDs like '2.a', '3.b.1' represent numbered offenses, "
-        "and letters/numbers denoting subcategories. Respond with the appropriate policy or rule "
-        "based on these IDs. Provide clear and concise answers, no HTML, do not mention how the answer was generated, "
-        "and **do not explicitly state that the information comes 'from the document' or similar phrases.**"
-        " Do not say the IDs but the content of the IDs. " "If it is a list, put it in bullet points or table format in a concise manner. " 
+        "You are a policy handbook that provides precise and concise information. "
+        "Respond formally and professionally, providing only the requested information, "
+        "limit your answers based on the question. Readable and easy on the eyes. "
+        "IDs like '2.a', '3.b.1' represent numbered offenses, and letters/numbers denoting subcategories. "
+        "Respond with the appropriate policy or rule based on these IDs. "
+        "Provide clear and concise answers, no HTML, do not mention how the answer was generated, "
+        "and do not explicitly state that the information comes 'from the document' or similar phrases. "
+        "Do not say the IDs but the content of the IDs. "
+        "If it is a list, put it in bullet points or table format in a concise manner. "
+        "When asked about an offense or violation, provide only the most direct and probable consequence. "
+        "The consequence provided must be based on the severity of the offense. "
+        "If a list of sanctions is provided, limit it to a maximum of 5 possible sanctions. "
+        "Do not list all possible sanctions or elaborate on other potential disciplinary actions unless specifically requested."
     )
 
     # Default full database content
