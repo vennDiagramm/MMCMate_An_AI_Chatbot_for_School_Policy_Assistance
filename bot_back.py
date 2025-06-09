@@ -68,6 +68,7 @@ def query_gemini_api(db_path, user_input):
         "The consequence provided must be based on the severity of the offense. "
         "If a list of sanctions is provided, limit it to a maximum of 5 possible sanctions. "
         "Do not list all possible sanctions or elaborate on other potential disciplinary actions unless specifically requested."
+        "Look for what page the sanction is found, use this 'We recommend you to check page(s) (insert page) in the handbook for more details.'"
     )
 
     # Default full database content
@@ -83,7 +84,7 @@ def query_gemini_api(db_path, user_input):
     llm_chain = LLMChain(prompt=prompt, llm=model)
 
     if input_checker.contains_keywords(user_input, ACCEPTED_KEYWORDS):
-        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone}) + "\n\n We recommend you to check the handbook for more details."
+        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone})
     elif input_checker.contains_keywords(user_input, GOODBYE_KEYWORDS):
         return "You are very much welcome! I am glad I could help!"
     elif input_checker.contains_keywords(user_input, GREETING_KEYWORDS) and len(user_input) <= 17:
@@ -94,7 +95,7 @@ def query_gemini_api(db_path, user_input):
     ]):
         return "I'm sorry, I can't help you with that. Please ask questions regarding the handbook. Could you please ask something else or clarify your question?"
     else:
-        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone}) + "\n\n We recommend you to check the handbook for more details."
+        response = llm_chain.run({"db_content": db_content, "user_input": user_input, "tone": tone})
 
     if "Not found" in response or "Unavailable" in response or not response.strip():
         return "I'm sorry, I couldn't find an answer to your question. Could you please rephrase it or ask something else?"
