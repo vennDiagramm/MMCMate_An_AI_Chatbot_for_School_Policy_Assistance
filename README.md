@@ -7,6 +7,8 @@ The chatbot provides an interactive and user-friendly experience for students se
 
 ---------------------------------------------------
 
+
+
 🧠 Technologies Used
 --------------------
 
@@ -17,6 +19,8 @@ The chatbot provides an interactive and user-friendly experience for students se
 - **NLTK, langdetect, uuid** – Utility libraries for natural language processing, language detection, and ID generation
 
 ---------------------------------------------------
+
+
 
 ✨ Features
 -----------
@@ -29,6 +33,8 @@ The chatbot provides an interactive and user-friendly experience for students se
 - **User-Friendly GUI** – Seamless interaction via a browser-based interface powered by Streamlit
 
 ---------------------------------------------------
+
+
 
 🚀 Installation Guide
 ----------------------
@@ -78,6 +84,8 @@ The chatbot provides an interactive and user-friendly experience for students se
    - Choose the one pointing to your virtual environment (e.g., `chatBot\Scripts\python.exe`)
 
 ---------------------------------------------------
+
+
 
 📬 Contact & Acknowledgments
 -----------------------------
