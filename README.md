@@ -5,7 +5,7 @@ Welcome to the repository for **MMCMate**, an AI-powered chatbot developed to as
 
 The chatbot provides an interactive and user-friendly experience for students seeking clarity on institutional guidelines and policies.
 
----------------------------------------------------
+
 
 
 
@@ -18,7 +18,7 @@ The chatbot provides an interactive and user-friendly experience for students se
 - **LangChain + Google GenAI** – For integrating advanced language processing features  
 - **NLTK, langdetect, uuid** – Utility libraries for natural language processing, language detection, and ID generation
 
----------------------------------------------------
+
 
 
 
@@ -32,7 +32,7 @@ The chatbot provides an interactive and user-friendly experience for students se
 - **API Integration** – Connects with Gemini via LangChain and handles `.env`-based secure API key usage  
 - **User-Friendly GUI** – Seamless interaction via a browser-based interface powered by Streamlit
 
----------------------------------------------------
+
 
 
 
@@ -83,7 +83,7 @@ The chatbot provides an interactive and user-friendly experience for students se
    - Type: `Python: Select Interpreter`
    - Choose the one pointing to your virtual environment (e.g., `chatBot\Scripts\python.exe`)
 
----------------------------------------------------
+
 
 
 
