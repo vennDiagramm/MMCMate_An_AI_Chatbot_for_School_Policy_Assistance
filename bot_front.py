@@ -11,7 +11,7 @@ import os
 # Function to handle GUI
 def main():
     # Streamlit set up
-    st.set_page_config(page_title="MMCMate", page_icon="Icons/mapua_icon_83e_icon.ico")
+    st.set_page_config(page_title="MMCMate", page_icon="https://raw.githubusercontent.com/vennDiagramm/MMCMate_An_AI_Chatbot_for_School_Policy_Assistance/main/icons/mapua_icon_83e_icon.ico")
     st.title("MMCMate :books:")
     st.write("Hello, how may I help you?")
 
