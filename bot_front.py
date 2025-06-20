@@ -6,6 +6,7 @@ from ChatHistory import (
 )
 import streamlit as st
 from datetime import datetime
+import os
 
 # Function to handle GUI
 def main():
@@ -18,7 +19,7 @@ def main():
     init_chat()
 
     # Path to the database
-    db_path = r"database\databasefinalnjud.db"
+    db_path = os.path.join("database", "databasefinalnjud.db")
 
     # --- Sidebar (For chat history) ---
     with st.sidebar:
