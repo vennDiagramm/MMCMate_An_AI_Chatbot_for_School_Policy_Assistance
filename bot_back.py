@@ -37,6 +37,9 @@ ACCEPTED_KEYWORDS = [
                     "rights", "responsibilities", "student rights", "classroom conduct", 
                     "discipline", "code of conduct", "sanction", "penalty", "freedom", "academic" ]
 GOODBYE_KEYWORDS = ["thank you", "goodbye", "farewell", "thanks", "ty", "thank", "bye"]
+IDENTITY_KEYWORDS = [ "what are you", "who are you", "are you a bot", "what is your name",  "what's your name",
+                     "what can you do", "your purpose", "are you human",  "describe yourself", "tell me about yourself",
+                     "what do you do", "what is your function", "what is your role", "what are you here for",]
 
 # Connect to SQLite database and fetch the raw data
 def extract_raw_data_from_db(db_path):
@@ -89,6 +92,13 @@ def query_gemini_api(db_path, user_input):
         return "You are very much welcome! I am glad I could help!"
     elif input_checker.contains_keywords(user_input, GREETING_KEYWORDS) and len(user_input) <= 17:
         return "Hello! How may I assist you today?"
+    elif any(phrase in user_input.lower() for phrase in IDENTITY_KEYWORDS):
+        return "I'm MMCMate, your AI chatbot assistant designed to help students understand Mapúa MCM’s school policies, rights, and responsibilities."
+    elif "mmcm" in user_input.lower():
+        return (
+            "MMCM is the acronym for Mapúa Malayan Colleges Mindanao, a private educational institution in the Philippines. "
+            "It is part of the Mapúa University system. If you have specific questions about MMCM, feel free to ask!"
+        )
     elif any([
         input_checker.is_mathematical_expression(user_input),
         input_checker.is_nonsensical_input(user_input),

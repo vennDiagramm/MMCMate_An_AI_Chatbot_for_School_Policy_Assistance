@@ -125,9 +125,9 @@ def display_chat():
     """Display current chat messages"""
     for message in st.session_state.messages:
         avatar_path = (
-            'https://raw.githubusercontent.com/vennDiagramm/admissionBot/refs/heads/main/Icons/student.ico'
+            'https://raw.githubusercontent.com/vennDiagramm/MMCMate_An_AI_Chatbot_for_School_Policy_Assistance/main/icons/user_icon.ico'
             if message["role"] == "user" else
-            'https://raw.githubusercontent.com/vennDiagramm/admissionBot/refs/heads/main/Icons/mapua_icon_83e_icon.ico'
+            'https://raw.githubusercontent.com/vennDiagramm/MMCMate_An_AI_Chatbot_for_School_Policy_Assistance/main/icons/mapua_icon_83e_icon.ico'
         )
         with st.chat_message(message["role"], avatar=avatar_path):
             justified_content = f"<div style='text-align: justify;'>{message['content']}</div>" # for justify
