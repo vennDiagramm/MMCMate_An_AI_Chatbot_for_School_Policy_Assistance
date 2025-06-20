@@ -17,7 +17,7 @@ def main():
     # Initialize chat system
     init_chat()
 
-    # Provide the path to your database file here
+    # Path to the database
     db_path = r"database\databasefinalnjud.db"
 
     # --- Sidebar (For chat history) ---
