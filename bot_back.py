@@ -115,14 +115,14 @@ def handle_conversation(db_path):
         add_message("user", user_input)
         
         # Display user message immediately
-        with st.chat_message("user", avatar='https://raw.githubusercontent.com/vennDiagramm/admissionBot/refs/heads/main/Icons/student.ico'):
+        with st.chat_message("user", avatar='https://raw.githubusercontent.com/vennDiagramm/MMCMate_An_AI_Chatbot_for_School_Policy_Assistance/main/icons/user_icon.ico'):
             st.markdown(user_input)
 
         # Get assistant response
         result_gen = query_gemini_api(db_path, user_input)
 
         # Display assistant response with typing effect
-        with st.chat_message("assistant", avatar='https://raw.githubusercontent.com/vennDiagramm/admissionBot/refs/heads/main/Icons/mapua_icon_83e_icon.ico'):
+        with st.chat_message("assistant", avatar='https://raw.githubusercontent.com/vennDiagramm/MMCMate_An_AI_Chatbot_for_School_Policy_Assistance/main/icons/mapua_icon_83e_icon.ico'):
             assistant_message = ""
             placeholder = st.empty()
             for word in result_gen:
