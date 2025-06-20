@@ -91,7 +91,8 @@ def query_gemini_api(db_path, user_input):
         return "Hello! How may I assist you today?"
     elif any([
         input_checker.is_mathematical_expression(user_input),
-        input_checker.is_nonsensical_input(user_input)
+        input_checker.is_nonsensical_input(user_input),
+        input_checker.is_sql_injection_attempt(user_input)
     ]):
         return "I'm sorry, I can't help you with that. Please ask questions regarding the handbook. Could you please ask something else or clarify your question?"
     else:

@@ -6,7 +6,6 @@ from nltk.corpus import words
 # For Streamlit kasi di nya ma detect
 nltk.download('words')
 
-
 class InputChecker:
     def __init__(self):
         self.valid_words = set(words.words())  # Load valid words once
@@ -39,6 +38,27 @@ class InputChecker:
     def is_mathematical_expression(self, user_input):
         # Check for a math expression like "2 + 3 * (4 - 1)"
         return re.match(r'^[\d\s\+\-\*\/\%\(\)]+$', user_input.strip()) is not None
+
+    def is_sql_injection_attempt(self, user_input):
+        # Normalize input
+        lowered = user_input.lower()
+
+        # Common SQL injection patterns
+        sql_keywords = [
+            "select", "insert", "update", "delete", "drop", "alter", "exec", "union", 
+            "create", "truncate", "--", ";", "/*", "*/", "@@", "char(", "nchar(", 
+            "varchar(", "cast(", "convert(", "information_schema", "xp_"
+        ]
+
+        pattern = r"|".join(re.escape(keyword) for keyword in sql_keywords)
+        if re.search(pattern, lowered):
+            return True
+
+        # Generic suspicious characters
+        if re.search(r"(;|'|\-\-|\bOR\b|\bAND\b).*(=|LIKE)", lowered):
+            return True
+
+        return False
 
     def remove_punctuation(self, text):
         return re.sub(r'[^\w\s]', '', text)
