@@ -17,6 +17,7 @@ The chatbot provides an interactive and user-friendly experience for students se
 - **Streamlit** – Web framework for building the interactive frontend  
 - **LangChain + Google GenAI** – For integrating advanced language processing features  
 - **NLTK, langdetect, uuid** – Utility libraries for natural language processing, language detection, and ID generation
+- **FuzzyWuzzy** – Enables fuzzy string matching to handle typos and imprecise inputs  
 
 
 
@@ -26,7 +27,8 @@ The chatbot provides an interactive and user-friendly experience for students se
 -----------
 
 - **Interactive Chat Interface** – Ask about school rules, regulations, and other policy-related topics  
-- **Smart Input Handling** – Detects and responds to irrelevant or nonsense inputs  
+- **Smart Input Handling** – Detects and responds to irrelevant or nonsense inputs
+- **Multilingual Support** – Understands queries in **Filipino**, **English**, and other detected languages  
 - **Natural Language Support** – Understands user queries with the help of AI models  
 - **Chat Save Feature** – Users can save, rename, and delete their conversation history in `.txt` format  
 - **API Integration** – Connects with Gemini via LangChain and handles `.env`-based secure API key usage  
@@ -60,7 +62,7 @@ The chatbot provides an interactive and user-friendly experience for students se
    mkdir .pip_cache
 
    # Install required dependencies
-   pip install --cache-dir=.pip_cache streamlit python-dotenv langdetect nltk langchain langchain-google-genai uuid
+   pip install --cache-dir=.pip_cache streamlit python-dotenv langdetect nltk langchain langchain-google-genai uuid fuzzywuzzy python-Levenshtein
 
    # If google-genai fails to install properly
    pip install -U langchain-google-genai
