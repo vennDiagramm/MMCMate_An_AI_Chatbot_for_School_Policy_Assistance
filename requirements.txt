@@ -5,3 +5,5 @@ nltk
 langchain
 langchain-google-genai
 uuid
+fuzzywuzzy
+python-Levenshtein
