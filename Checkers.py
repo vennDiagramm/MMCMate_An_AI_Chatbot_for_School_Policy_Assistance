@@ -53,17 +53,10 @@ class InputChecker:
         if invalid_ratio > 0.6:
             print("[DEBUG] Rejected: Too many invalid words")
             return True
-
-        # 4. Language detection: flag if it's not English
-        if invalid_ratio > 0.3:
-            try:
-                lang = detect(user_input)
-                print(f"[DEBUG] Detected language: {lang}")
-                if lang != 'en':
-                    print("[DEBUG] Rejected: Not English")
-                    return True
-            except:
-                print("[DEBUG] Language detection failed")
+        
+        # 4. Language detection
+        lang = detect(user_input)
+        print(f"[DEBUG] Detected language: {lang}")
 
         # If all checks passed, input is not nonsensical
         print("[DEBUG] Passed all nonsense checks")
