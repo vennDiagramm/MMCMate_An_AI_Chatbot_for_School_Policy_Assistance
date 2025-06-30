@@ -87,7 +87,7 @@ The chatbot provides an interactive and user-friendly experience for students se
 
 
 
-👥 Contributors
+👩‍💻 Authors
 ----------------------
 
 - **<span style="color:#FF6347">Marga Pilapil</span>** - [vennDiagramm](https://github.com/vennDiagramm)
